@@ -37,16 +37,19 @@ steps:
     CALL dev-init.bat
     CALL conda info -a
     CALL conda-build tests\test-recipes\activate_deactivate_package
-    CALL py.test --junitxml=junit/test-results.xml --cov=conda --cov-report=xml --cov-report=html -m "not integration and not installed" -v
-  displayName: Run py$(python.version) $(conda.subdir) Tests 
+    CALL py.test --junitxml=junit/unit-test-results.xml --cov=conda --cov-report=xml --cov-report=html -m "not integration and not installed" -v
+  displayName: py$(python.version) $(conda.subdir) unit tests 
 
 - task: PublishTestResults@2
+  displayName: 'Publish unit test results'
   condition: succeededOrFailed()
   inputs:
-    testResultsFiles: '**/test-*.xml'
-    testRunTitle: 'Publish test results for Python $(python.version) $(conda.subdir)'
+    testResultsFiles: '**/unit-test-*.xml'
+    testRunTitle: 'py$(python.version) $(conda.subdir) unit tests'
 
+# Azure Pipelines does not merge coverage files so this is only useful for early dev phase
 - task: PublishCodeCoverageResults@1
+  displayName: 'Publish coverage results'
   condition: succeededOrFailed()
   inputs:
     codeCoverageTool: Cobertura
