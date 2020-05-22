@@ -6,8 +6,12 @@ pool:
   vmImage: 'vs2017-win2016'
 strategy:
   matrix:
-    Python27:
+    Python27_32:
       python.version: '2.7'
+      conda.subdir: 'win-32'
+    Python27_64:
+      python.version: '2.7'
+      conda.subdir: 'win-64'
 #    Python35:
 #      python.version: '3.5'
 #    Python36:
@@ -24,7 +28,7 @@ steps:
 
 - script: |
     CALL $(CONDA)\scripts\activate.bat
-    set CONDA_SUBDIR=win-32
+    set CONDA_SUBDIR=$(conda.subdir)
     CALL conda install -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
     CALL conda install -yq conda-build=3.17
     pip install codecov==2.0.5
@@ -33,7 +37,7 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
-    set CONDA_SUBDIR=win-32
+    set CONDA_SUBDIR=$(conda.subdir)
     cd $(Build.SourcesDirectory)
     CALL dev-init.bat
     CALL conda-build tests\test-recipes\activate_deactivate_package
