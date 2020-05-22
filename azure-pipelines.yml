@@ -15,9 +15,6 @@ strategy:
 #    Python37:
 #      python.version: '3.7'
 
-variables:
-  ADD_COV: "--junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html"
-
 steps:
 - task: UsePythonVersion@0
   inputs:
@@ -38,7 +35,7 @@ steps:
     cd $(Build.SourcesDirectory)
     CALL dev-init.bat
     CALL conda-build tests\test-recipes\activate_deactivate_package
-    CALL py.test %ADD_COV% -m "not integration and not installed" -v
+    CALL py.test --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html -m "not integration and not installed" -v
   displayName: Run Tests 
 
 - task: PublishTestResults@2
