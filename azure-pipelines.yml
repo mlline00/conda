@@ -20,11 +20,12 @@ strategy:
     #   conda.subdir: 'win-64'
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '$(python.version)'
-    architecture: x64
-  displayName: 'Use Python $(python.version)'
+# Doesn't matter what python version bootstraps the environment
+# - task: UsePythonVersion@0
+#   inputs:
+#     versionSpec: '$(python.version)'
+#     architecture: x64
+#   displayName: 'Use Python $(python.version)'
 
 - script: |
     CALL $(CONDA)\scripts\activate.bat
@@ -41,6 +42,7 @@ steps:
     set CONDA_SUBDIR=$(conda.subdir)
     cd $(Build.SourcesDirectory)
     CALL dev-init.bat
+    CALL conda info -a
     CALL conda-build tests\test-recipes\activate_deactivate_package
     CALL py.test --junitxml=junit/test-results.xml --cov=conda --cov-report=xml --cov-report=html -m "not integration and not installed" -v
   displayName: Run Tests 
