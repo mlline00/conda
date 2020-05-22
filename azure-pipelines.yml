@@ -6,18 +6,18 @@ pool:
   vmImage: 'vs2017-win2016'
 strategy:
   matrix:
-    Python27_32:
-      python.version: '2.7'
-      conda.subdir: 'win-32'
-    Python27_64:
-      python.version: '2.7'
-      conda.subdir: 'win-64'
+    # Python27_32:
+    #   python.version: '2.7'
+    #   conda.subdir: 'win-32'
+    # Python27_64:
+    #   python.version: '2.7'
+    #   conda.subdir: 'win-64'
     Python37_32:
       python.version: '3.7'
       conda.subdir: 'win-32'
-    Python37_64:
-      python.version: '3.7'
-      conda.subdir: 'win-64'
+    # Python37_64:
+    #   python.version: '3.7'
+    #   conda.subdir: 'win-64'
 
 steps:
 - task: UsePythonVersion@0
@@ -29,6 +29,8 @@ steps:
 - script: |
     CALL $(CONDA)\scripts\activate.bat
     set CONDA_SUBDIR=$(conda.subdir)
+    CALL conda info
+    CALL conda list
     CALL conda install -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
     CALL conda install -yq conda-build=3.17
     pip install codecov==2.0.5
