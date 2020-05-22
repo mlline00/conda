@@ -6,27 +6,20 @@ pool:
   vmImage: 'vs2017-win2016'
 strategy:
   matrix:
-    # Python27_32:
-    #   python.version: '2.7'
-    #   conda.subdir: 'win-32'
-    # Python27_64:
-    #   python.version: '2.7'
-    #   conda.subdir: 'win-64'
+    Python27_32:
+      python.version: '2.7'
+      conda.subdir: 'win-32'
+    Python27_64:
+      python.version: '2.7'
+      conda.subdir: 'win-64'
     Python37_32:
       python.version: '3.7'
       conda.subdir: 'win-32'
-    # Python37_64:
-    #   python.version: '3.7'
-    #   conda.subdir: 'win-64'
+    Python37_64:
+      python.version: '3.7'
+      conda.subdir: 'win-64'
 
 steps:
-# Doesn't matter what python version bootstraps the environment
-# - task: UsePythonVersion@0
-#   inputs:
-#     versionSpec: '$(python.version)'
-#     architecture: x64
-#   displayName: 'Use Python $(python.version)'
-
 - script: |
     CALL $(CONDA)\scripts\activate.bat
     set CONDA_SUBDIR=$(conda.subdir)
@@ -36,7 +29,7 @@ steps:
     pip install codecov==2.0.5
     cd $(Build.SourcesDirectory)
     python -m conda init cmd.exe --dev
-  displayName: 'Install dependencies'
+  displayName: Initialize test environment
 
 - script: |
     set CONDA_SUBDIR=$(conda.subdir)
@@ -45,13 +38,13 @@ steps:
     CALL conda info -a
     CALL conda-build tests\test-recipes\activate_deactivate_package
     CALL py.test --junitxml=junit/test-results.xml --cov=conda --cov-report=xml --cov-report=html -m "not integration and not installed" -v
-  displayName: Run Tests 
+  displayName: Run py$(python.version) $(conda.subdir) Tests 
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
   inputs:
     testResultsFiles: '**/test-*.xml'
-    testRunTitle: 'Publish test results for Python $(python.version)'
+    testRunTitle: 'Publish test results for Python $(python.version) $(conda.subdir)'
 
 - task: PublishCodeCoverageResults@1
   condition: succeededOrFailed()
