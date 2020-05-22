@@ -1,0 +1,44 @@
+# Use default triggering logic
+# trigger: ...
+# pr: ...
+
+pool:
+  vmImage: 'vs2017-win2016'
+strategy:
+  matrix:
+    Python27:
+      python.version: '2.7'
+#    Python35:
+#      python.version: '3.5'
+#    Python36:
+#      python.version: '3.6'
+#    Python37:
+#      python.version: '3.7'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '$(python.version)'
+    architecture: x64
+  displayName: 'Use Python $(python.version)'
+
+- script: |
+    CALL $(CONDA)\scripts\activate.bat
+    CALL conda install -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
+    CALL conda install -yq conda-build=3.17
+    pip install codecov==2.0.5
+    cd $(Build.SourcesDirectory)
+    python -m conda init cmd.exe --dev
+  displayName: 'Install dependencies'
+
+- script: |
+    cd $(Build.SourcesDirectory)
+    CALL dev-init.bat
+    CALL conda-build tests\test-recipes\activate_deactivate_package
+    CALL py.test %ADD_COV% -m "not integration and not installed" -v
+  displayName: Run Tests 
+
+#- script: |
+#    pip install pytest pytest-azurepipelines
+#    pytest
+#  displayName: 'pytest'
