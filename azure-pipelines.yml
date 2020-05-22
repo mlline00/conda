@@ -29,10 +29,9 @@ steps:
 - script: |
     CALL $(CONDA)\scripts\activate.bat
     set CONDA_SUBDIR=$(conda.subdir)
-    CALL conda info
-    CALL conda list
-    CALL conda install -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
-    CALL conda install -yq conda-build=3.17
+    CALL conda create -n ci_base -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
+    CALL conda activate ci_base
+    CALL conda install -yq pip conda-build=3.17
     pip install codecov==2.0.5
     cd $(Build.SourcesDirectory)
     python -m conda init cmd.exe --dev
