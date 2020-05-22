@@ -45,6 +45,7 @@ steps:
     testRunTitle: 'Publish test results for Python $(python.version)'
 
 - task: PublishCodeCoverageResults@1
+  condition: succeededOrFailed()
   inputs:
     codeCoverageTool: Cobertura
     summaryFileLocation: '**/coverage.xml'
