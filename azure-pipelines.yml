@@ -24,6 +24,7 @@ steps:
 
 - script: |
     CALL $(CONDA)\scripts\activate.bat
+    set CONDA_SUBDIR=win-32
     CALL conda install -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
     CALL conda install -yq conda-build=3.17
     pip install codecov==2.0.5
@@ -32,6 +33,7 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
+    set CONDA_SUBDIR=win-32
     cd $(Build.SourcesDirectory)
     CALL dev-init.bat
     CALL conda-build tests\test-recipes\activate_deactivate_package
