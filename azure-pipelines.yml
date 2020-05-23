@@ -38,6 +38,7 @@ steps:
     CALL conda info -a
     CALL conda-build tests\test-recipes\activate_deactivate_package
     CALL py.test --junitxml=junit/unit-test-results.xml --cov=conda --cov-report=xml --cov-report=html -m "not integration and not installed" -v
+    CALL py.test --junitxml=junit/unit-test-results.xml --cov=conda --cov-report=xml --cov-report=html --cov-append -m "integration and not installed" -v
   displayName: py$(python.version) $(conda.subdir) unit tests 
 
 - task: PublishTestResults@2
