@@ -3,7 +3,7 @@
 # pr: ...
 
 jobs:
-  - job: 'Conda Test Suite'
+  - job: 'CondaTestSuite'
     timeoutInMinutes: 90
     pool:
       vmImage: 'vs2017-win2016'
