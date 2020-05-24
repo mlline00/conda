@@ -6,18 +6,46 @@ pool:
   vmImage: 'vs2017-win2016'
 strategy:
   matrix:
-    Python27_32:
+    Python27_32_unit:
       python.version: '2.7'
       conda.subdir: 'win-32'
-    Python27_64:
+      test.style: 'unit'
+      pytest.marker: 'not integration and not installed'
+    Python27_64_unit:
       python.version: '2.7'
       conda.subdir: 'win-64'
-    Python37_32:
+      test.style: 'unit'
+      pytest.marker: 'not integration and not installed'
+    Python37_32_unit:
       python.version: '3.7'
       conda.subdir: 'win-32'
-    Python37_64:
+      test.style: 'unit'
+      pytest.marker: 'not integration and not installed'
+    Python37_64_unit:
       python.version: '3.7'
       conda.subdir: 'win-64'
+      test.style: 'unit'
+      pytest.marker: 'not integration and not installed'
+    Python27_32_integration:
+      python.version: '2.7'
+      conda.subdir: 'win-32'
+      test.style: 'integration'
+      pytest.marker: 'integration and not installed'
+    Python27_64_integration:
+      python.version: '2.7'
+      conda.subdir: 'win-64'
+      test.style: 'integration'
+      pytest.marker: 'integration and not installed'
+    Python37_32_integration:
+      python.version: '3.7'
+      conda.subdir: 'win-32'
+      test.style: 'integration'
+      pytest.marker: 'integration and not installed'
+    Python37_64_integration:
+      python.version: '3.7'
+      conda.subdir: 'win-64'
+      test.style: 'integration'
+      pytest.marker: 'integration and not installed'
 
 steps:
 - script: |
@@ -37,9 +65,10 @@ steps:
     CALL dev-init.bat
     CALL conda info -a
     CALL conda-build tests\test-recipes\activate_deactivate_package
-    CALL py.test --junitxml=junit/unit-test-results.xml --cov=conda --cov-report=xml --cov-report=html -m "not integration and not installed" -v
-    CALL py.test --junitxml=junit/unit-test-results.xml --cov=conda --cov-report=xml --cov-report=html --cov-append -m "integration and not installed" -v
-  displayName: py$(python.version) $(conda.subdir) unit tests 
+    CALL py.test --junitxml=junit/unit-test-results.xml --cov=conda --cov-report=xml --cov-report=html -m "$(pytest.marker)" -v
+  displayName: py$(python.version) $(conda.subdir) $(test.style) tests
+  timeoutInMinutes: 90
+
 
 - task: PublishTestResults@2
   displayName: 'Publish unit test results'
