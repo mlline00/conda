@@ -50,16 +50,19 @@ jobs:
           test.style: 'integration'
           pytest.marker: 'integration and not installed'
     steps:
-      # Test suite needs to reach python via relative path. On Windows, relative paths can only be constructed when
-      #   the interpreter and source tree are on the same drive. This is not guaranteed when using a hosted agent.
+      # Test suite needs to reach python and temp foldersvia relative path. On Windows, relative paths can only be
+      #   constructed when the two folders are on the same drive. This is not guaranteed when using a hosted agent
+      #   and, even if it happens to be the case, it could change anytime. 
       - script: |
-          cd $(Build.SourcesDirectory)
-          mklink /J \condalink $(CONDA)
-        displayName: Link Conda to source drive
+          pushd %TEMP%
+          mklink /J \conda_bin $(CONDA)
+          mklink /J \conda_src ($Build.SourcesDirectory)
+        displayName: Link conda and source folders on temp drive
       - script: |
           set CONDA_SUBDIR=$(conda.subdir)
-          cd $(Build.SourcesDirectory)
-          CALL \condalink\scripts\activate.bat
+          pushd %TEMP%
+          cd \conda_src
+          CALL \conda_bin\scripts\activate.bat
           CALL conda create -n ci_base -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
           CALL conda activate ci_base
           CALL conda install -yq pip conda-build=3.17
@@ -68,7 +71,8 @@ jobs:
         displayName: Initialize test environment
       - script: |
           set CONDA_SUBDIR=$(conda.subdir)
-          cd $(Build.SourcesDirectory)
+          pushd %TEMP%
+          cd \conda_src
           CALL dev-init.bat
           CALL conda info -a
           CALL conda-build tests\test-recipes\activate_deactivate_package
