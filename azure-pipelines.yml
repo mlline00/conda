@@ -9,21 +9,21 @@ jobs:
       vmImage: 'vs2017-win2016'
     strategy:
       matrix:
-        # Python27_32_unit:
-        #   python.version: '2.7'
-        #   conda.subdir: 'win-32'
-        #   test.style: 'unit'
-        #   pytest.marker: 'not integration and not installed'
-        # Python27_64_unit:
-        #   python.version: '2.7'
-        #   conda.subdir: 'win-64'
-        #   test.style: 'unit'
-        #   pytest.marker: 'not integration and not installed'
-        # Python37_32_unit:
-        #   python.version: '3.7'
-        #   conda.subdir: 'win-32'
-        #   test.style: 'unit'
-        #   pytest.marker: 'not integration and not installed'
+        Python27_32_unit:
+          python.version: '2.7'
+          conda.subdir: 'win-32'
+          test.style: 'unit'
+          pytest.marker: 'not integration and not installed'
+        Python27_64_unit:
+          python.version: '2.7'
+          conda.subdir: 'win-64'
+          test.style: 'unit'
+          pytest.marker: 'not integration and not installed'
+        Python37_32_unit:
+          python.version: '3.7'
+          conda.subdir: 'win-32'
+          test.style: 'unit'
+          pytest.marker: 'not integration and not installed'
         Python37_64_unit:
           python.version: '3.7'
           conda.subdir: 'win-64'
