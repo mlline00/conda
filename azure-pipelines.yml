@@ -9,26 +9,26 @@ jobs:
       vmImage: 'vs2017-win2016'
     strategy:
       matrix:
-        Python27_32_unit:
-          python.version: '2.7'
-          conda.subdir: 'win-32'
-          test.style: 'unit'
-          pytest.marker: 'not integration and not installed'
-        Python27_64_unit:
-          python.version: '2.7'
-          conda.subdir: 'win-64'
-          test.style: 'unit'
-          pytest.marker: 'not integration and not installed'
+        # Python27_32_unit:
+        #   python.version: '2.7'
+        #   conda.subdir: 'win-32'
+        #   test.style: 'unit'
+        #   pytest.marker: 'not integration and not installed'
+        # Python27_64_unit:
+        #   python.version: '2.7'
+        #   conda.subdir: 'win-64'
+        #   test.style: 'unit'
+        #   pytest.marker: 'not integration and not installed'
         Python37_32_unit:
           python.version: '3.7'
           conda.subdir: 'win-32'
           test.style: 'unit'
           pytest.marker: 'not integration and not installed'
-        Python37_64_unit:
-          python.version: '3.7'
-          conda.subdir: 'win-64'
-          test.style: 'unit'
-          pytest.marker: 'not integration and not installed'
+        # Python37_64_unit:
+        #   python.version: '3.7'
+        #   conda.subdir: 'win-64'
+        #   test.style: 'unit'
+        #   pytest.marker: 'not integration and not installed'
         # Python27_32_integration:
         #   python.version: '2.7'
         #   conda.subdir: 'win-32'
@@ -69,7 +69,7 @@ jobs:
           REM CALL conda install -yq pip conda-build=3.17 conda-verify
           CALL conda info
           CALL conda list
-          CALL conda remove -y win_inet_pton pip chardet
+          CALL conda remove -y win_inet_pton pip chardet pyopenssl
           CALL conda install -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
           CALL conda install -yq pip conda-build=3.17 conda-verify
           pip install codecov==2.0.5
