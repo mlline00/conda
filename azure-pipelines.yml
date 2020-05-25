@@ -67,9 +67,8 @@ jobs:
           REM CALL conda create -n ci_base -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
           REM CALL conda activate ci_base
           REM CALL conda install -yq pip conda-build=3.17 conda-verify
-          CALL conda info
+          CALL conda remove -y win_inet_pton pip chardet pyopenssl powershell_shortcut wincertstore six
           CALL conda list
-          CALL conda remove -y win_inet_pton pip chardet pyopenssl powershell_shortcut wincertstore
           CALL conda install -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
           CALL conda install -yq pip conda-build=3.17 conda-verify
           pip install codecov==2.0.5
