@@ -50,10 +50,10 @@ jobs:
           test.style: 'integration'
           pytest.marker: 'integration and not installed'
     steps:
-      # Test suite needs to reach python and temp foldersvia relative path. On Windows, relative paths can only be
-      #   constructed when the two folders are on the same drive. This is not guaranteed when using a hosted agent
-      #   and, even if it happens to be the case, it could change anytime. Use junctions to co-locate these folders
-      #   to ensure we can construct relative paths.
+      # Test suite expectes to reach python and temp folders via relative paths. On Windows, relative paths can only
+      #   be constructed when the two folders are on the same drive. This is not guaranteed when using a hosted agent
+      #   and, even if it happens to be the case, it could change at anytime. Use junctions to co-locate these folders
+      #   and support relative pathing.
       - script: |
           pushd %TEMP%
           mklink /J \conda_bin $(CONDA)
