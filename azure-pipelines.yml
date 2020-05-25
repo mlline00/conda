@@ -67,8 +67,8 @@ jobs:
           REM CALL conda create -n ci_base -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
           REM CALL conda activate ci_base
           REM CALL conda install -yq pip conda-build=3.17 conda-verify
-          conda info
-          conda list
+          CALL conda info
+          CALL conda list
           CALL conda remove -y win_inet_pton pip chardet
           CALL conda install -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
           CALL conda install -yq pip conda-build=3.17 conda-verify
