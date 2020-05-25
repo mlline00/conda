@@ -53,7 +53,7 @@ jobs:
       # Test suite needs to reach python and temp foldersvia relative path. On Windows, relative paths can only be
       #   constructed when the two folders are on the same drive. This is not guaranteed when using a hosted agent
       #   and, even if it happens to be the case, it could change anytime. Use junctions to co-locate these folders
-      #   to ensure relpath works.
+      #   to ensure we can construct relative paths.
       - script: |
           pushd %TEMP%
           mklink /J \conda_bin $(CONDA)
