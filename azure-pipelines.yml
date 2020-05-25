@@ -89,14 +89,14 @@ jobs:
           testResultsFiles: '**/unit-test-*.xml'
           testRunTitle: 'py$(python.version) $(conda.subdir) unit tests'
 
-      # Azure Pipelines does not merge coverage files so this is only useful for early dev phase
-      - task: PublishCodeCoverageResults@1
-        displayName: 'Publish coverage results'
-        condition: succeededOrFailed()
-        inputs:
-          codeCoverageTool: Cobertura
-          summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-          reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+      # # Azure Pipelines does not merge coverage files so this is only useful for early dev phase
+      # - task: PublishCodeCoverageResults@1
+      #   displayName: 'Publish coverage results'
+      #   condition: succeededOrFailed()
+      #   inputs:
+      #     codeCoverageTool: Cobertura
+      #     summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+      #     reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
 
       #- script: |
       #    pip install pytest pytest-azurepipelines
