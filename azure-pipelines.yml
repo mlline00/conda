@@ -52,7 +52,8 @@ jobs:
     steps:
       # Test suite needs to reach python and temp foldersvia relative path. On Windows, relative paths can only be
       #   constructed when the two folders are on the same drive. This is not guaranteed when using a hosted agent
-      #   and, even if it happens to be the case, it could change anytime. Use junctions to co-locate these folders.
+      #   and, even if it happens to be the case, it could change anytime. Use junctions to co-locate these folders
+      #   to ensure relpath works.
       - script: |
           pushd %TEMP%
           mklink /J \conda_bin $(CONDA)
@@ -76,7 +77,7 @@ jobs:
           CALL dev-init.bat
           CALL conda info -a
           CALL conda-build tests\test-recipes\activate_deactivate_package
-          CALL py.test --junitxml=junit/unit-test-results.xml --cov=conda --cov-report=xml --cov-report=html -m "$(pytest.marker)" -v
+          CALL py.test --junitxml=junit/unit-test-results.xml --cov=conda --cov-report=xml --cov-report=html -m "$(pytest.marker)" -vv
         displayName: py$(python.version) $(conda.subdir) $(test.style) tests
         
       - task: PublishTestResults@2
