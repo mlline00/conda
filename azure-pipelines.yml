@@ -64,7 +64,7 @@ jobs:
           pushd %TEMP%
           cd \conda_src
           CALL \conda_bin\scripts\activate.bat
-          CALL conda install -y python=2.7
+          REM CALL conda install -y python=2.7
           CALL conda install -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
           CALL conda install -yq pip conda-build=3.17 conda-verify
           pip install codecov==2.0.5
