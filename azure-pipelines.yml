@@ -29,26 +29,26 @@ jobs:
           conda.subdir: 'win-64'
           test.style: 'unit'
           pytest.marker: 'not integration and not installed'
-        # Python27_32_integration:
-        #   python.version: '2.7'
-        #   conda.subdir: 'win-32'
-        #   test.style: 'integration'
-        #   pytest.marker: 'integration and not installed'
-        # Python27_64_integration:
-        #   python.version: '2.7'
-        #   conda.subdir: 'win-64'
-        #   test.style: 'integration'
-        #   pytest.marker: 'integration and not installed'
-        # Python37_32_integration:
-        #   python.version: '3.7'
-        #   conda.subdir: 'win-32'
-        #   test.style: 'integration'
-        #   pytest.marker: 'integration and not installed'
-        # Python37_64_integration:
-        #   python.version: '3.7'
-        #   conda.subdir: 'win-64'
-        #   test.style: 'integration'
-        #   pytest.marker: 'integration and not installed'
+        Python27_32_integration:
+          python.version: '2.7'
+          conda.subdir: 'win-32'
+          test.style: 'integration'
+          pytest.marker: 'integration and not installed'
+        Python27_64_integration:
+          python.version: '2.7'
+          conda.subdir: 'win-64'
+          test.style: 'integration'
+          pytest.marker: 'integration and not installed'
+        Python37_32_integration:
+          python.version: '3.7'
+          conda.subdir: 'win-32'
+          test.style: 'integration'
+          pytest.marker: 'integration and not installed'
+        Python37_64_integration:
+          python.version: '3.7'
+          conda.subdir: 'win-64'
+          test.style: 'integration'
+          pytest.marker: 'integration and not installed'
     steps:
       # Test suite expectes to reach python and temp folders via relative paths. On Windows, relative paths can only
       #   be constructed when the two folders are on the same drive. This is not guaranteed when using a hosted agent
@@ -64,7 +64,8 @@ jobs:
           pushd %TEMP%
           cd \conda_src
           CALL \conda_bin\scripts\activate.bat
-          CALL conda install -y --force-reinstall --update-deps python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
+          CALL conda create -n ci_base -y python=$(python.version) pycosat conda requests ruamel_yaml pytest pytest-cov pytest-timeout mock responses urllib3 pexpect pywin32 anaconda-client conda-package-handling
+          CALL conda activate ci_base
           CALL conda install -yq pip conda-build=3.17 conda-verify
           pip install codecov==2.0.5
           python -m conda init cmd.exe --dev
@@ -84,7 +85,7 @@ jobs:
         condition: succeededOrFailed()
         inputs:
           testResultsFiles: '**/unit-test-*.xml'
-          testRunTitle: 'py$(python.version) $(conda.subdir) unit tests'
+          testRunTitle: 'py$(python.version) $(conda.subdir) $(test.style) tests'
 
       # # Azure Pipelines does not merge coverage files so this is only useful for early dev phase
       # - task: PublishCodeCoverageResults@1
