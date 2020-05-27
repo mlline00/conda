@@ -59,6 +59,14 @@ jobs:
           mklink /J \conda_bin $(CONDA)
           mklink /J \conda_src $(Build.SourcesDirectory)
         displayName: Link conda and source folders on temp drive
+      # - script: |
+      #     powershell -Command {Set-ExecutionPolicy Unrestricted -scope Machine}
+      #   displayName: Remove Powershell execution policy
+      - task: PowerShell@2
+        displayName: Remove Powershell execution policy
+        inputs:
+          targetType: inline
+          script: Set-ExecutionPolicy Unrestricted -scope Machine
       - script: |
           set CONDA_SUBDIR=$(conda.subdir)
           pushd %TEMP%
