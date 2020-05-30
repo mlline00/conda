@@ -91,14 +91,12 @@ jobs:
       #     testResultsFiles: '**/unit-test-*.xml'
       #     testRunTitle: 'py$(python.version) $(conda.subdir) $(test.style) tests'
 
-      # - script: |
-      #     bash < (curl -s https://codecov.io/bash) -h
-      #   displayName: 'Upload to codecov.io'
-      - task: Bash@3
+      - script: |
+          pushd %TEMP%
+          cd \conda_src
+          curl -s https://codecov.io/bash > codecov_uploader.sh
+          bash < codecov_uploader.sh
         displayName: 'Upload to codecov.io'
-        inputs:
-          targetType: 'inline'
-          script: bash < (curl -s https://codecov.io/bash) -h
 
       # # Azure Pipelines does not merge coverage files so this is only useful for early dev phase
       # - task: PublishCodeCoverageResults@1
