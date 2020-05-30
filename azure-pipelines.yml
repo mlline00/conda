@@ -8,7 +8,7 @@ jobs:
     pool:
       vmImage: 'vs2017-win2016'
     variables:
-      pytest.verbosity: '-vv'
+      pytest.verbosity: ''
     strategy:
       matrix:
         Python27_32_unit:
@@ -47,6 +47,7 @@ jobs:
           conda.subdir: 'win-32'
           test.style: 'integration'
           pytest.marker: 'integration and not installed'
+          pytest.verbosity: ''
         Python37_64_integration:
           python.version: '3.7'
           conda.subdir: 'win-64'
@@ -80,7 +81,7 @@ jobs:
           CALL dev-init.bat
           CALL conda info -a
           CALL conda-build tests\test-recipes\activate_deactivate_package
-          CALL py.test --junitxml=junit/unit-test-results.xml --cov=conda --cov-report=xml --cov-report=html -m "$(pytest.marker)" $(pytest.verbosity)
+          CALL py.test --junitxml=junit/unit-test-results.xml --cov=conda --cov-report=xml -m "$(pytest.marker)" $(pytest.verbosity)
         displayName: py$(python.version) $(conda.subdir) $(test.style) tests
         
       - task: PublishTestResults@2
