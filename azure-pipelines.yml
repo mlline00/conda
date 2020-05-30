@@ -97,5 +97,5 @@ jobs:
           pushd %TEMP%
           cd \conda_src
           curl -s https://codecov.io/bash > codecov_uploader.sh
-          bash -c "codecov_uploader.sh --help"
+          bash -c "pwd;ls"
         displayName: 'Upload to codecov.io'
