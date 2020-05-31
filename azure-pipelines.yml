@@ -96,6 +96,7 @@ jobs:
       - script: |
           pushd %TEMP%
           cd \conda_src
+          set CODECOV_TOKEN=d7354c4e-90a9-402d-be67-184062ffadac
           curl -s https://codecov.io/bash > codecov_uploader.sh
-          bash -c ". codecov_uploader.sh -C $(Build.SourceVersion)"
+          bash -c ". codecov_uploader.sh"
         displayName: 'Upload to codecov.io'
