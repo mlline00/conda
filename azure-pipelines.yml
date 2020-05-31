@@ -83,14 +83,14 @@ jobs:
           CALL dev-init.bat
           CALL conda info -a
           CALL conda-build tests\test-recipes\activate_deactivate_package
-          CALL py.test --junitxml=junit/unit-test-results.xml --cov=conda --cov-report=xml -m "$(pytest.marker)" $(pytest.verbosity)
+          CALL py.test --junitxml=junit/test-results.xml --cov=conda --cov-report=xml -m "$(pytest.marker)" $(pytest.verbosity)
         displayName: py$(python.version) $(conda.subdir) $(test.style) tests
         
       - task: PublishTestResults@2
         displayName: 'Publish $(test.style) test results'
         condition: succeededOrFailed()
         inputs:
-          testResultsFiles: '**/unit-test-*.xml'
+          testResultsFiles: '**/test-*.xml'
           testRunTitle: 'py$(python.version) $(conda.subdir) $(test.style) tests'
 
       - script: |
