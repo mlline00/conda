@@ -84,7 +84,7 @@ jobs:
           pushd %TEMP%
           cd \conda_src
           CALL dev-init.bat
-          IF $(pytest.cmd) EQ unit (
+          IF $(test.style) EQ unit (
             CALL py.test -m "not integration and not installed"                     --junitxml=junit/test-results.xml --cov=conda --cov-report=xml $(pytest.verbosity)
           ) ELSE IF $(pytest.cmd) EQ integration (
             CALL py.test -m "integration and not installed" -k "not test_create.py" --junitxml=junit/test-results.xml --cov=conda --cov-report=xml $(pytest.verbosity)
