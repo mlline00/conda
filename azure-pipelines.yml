@@ -78,10 +78,10 @@ jobs:
           CALL conda-build tests\test-recipes\activate_deactivate_package
         displayName: py$(python.version) $(conda.subdir) $(test.style) tests
       
-      - ${{ if eq(test.style, 'unit') }}:
+      - ${{ if eq(variables['test.style'], 'unit') }}:
           pytest.cmd: |
             CALL py.test --junitxml=junit/test-results.xml --cov=conda --cov-report=xml -m "not integration and not installed" $(pytest.verbosity)
-      - ${{ if eq(test.style, 'integration') }}:
+      - ${{ if eq(variables['test.style'], 'integration') }}:
         # Split the integration tests into two sections because 32-bit often runs out of memory 
         - pytest.cmd: |
             CALL py.test -m "integration and not installed" -k "not test_create.py" --junitxml=junit/test-results.xml --cov=conda --cov-report=xml $(pytest.verbosity)
