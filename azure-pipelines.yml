@@ -87,34 +87,34 @@ jobs:
         displayName: py$(python.version) $(conda.subdir) unit tests
         condition: eq(variables['test.style'], 'unit')
 
-      # - script: |
-      #     @ECHO ON
-      #     pushd %TEMP%
-      #     cd \conda_src
-      #     CALL dev-init.bat
-      #     CALL py.test -m "integration and not installed" -k "not test_create and not cli" --junitxml=junit/test-results-integration_g1.xml --cov=conda --cov-report=xml $(pytest.verbosity)
-      #   displayName: py$(python.version) $(conda.subdir) integration test group 1
-      #   condition: eq(variables['test.style'], 'integration')
+      - script: |
+          @ECHO ON
+          pushd %TEMP%
+          cd \conda_src
+          CALL dev-init.bat
+          CALL py.test -m "integration and not installed" -k "not test_create and not cli" --junitxml=junit/test-results-integration_g1.xml --cov=conda --cov-report=xml $(pytest.verbosity)
+        displayName: py$(python.version) $(conda.subdir) integration test group 1
+        condition: eq(variables['test.style'], 'integration')
 
-      # - script: |
-      #     @ECHO ON
-      #     pushd %TEMP%
-      #     cd \conda_src
-      #     CALL dev-init.bat
-      #     CALL py.test -m "integration and not installed" -k "test_create or cli"       --junitxml=junit/test-results-integration_g2.xml --cov=conda --cov-report=xml $(pytest.verbosity) --cov-append
-      #   displayName: py$(python.version) $(conda.subdir) integration test group 2
-      #   condition: eq(variables['test.style'], 'integration')
+      - script: |
+          @ECHO ON
+          pushd %TEMP%
+          cd \conda_src
+          CALL dev-init.bat
+          CALL py.test -m "integration and not installed" -k "test_create or cli"       --junitxml=junit/test-results-integration_g2.xml --cov=conda --cov-report=xml $(pytest.verbosity) --cov-append
+        displayName: py$(python.version) $(conda.subdir) integration test group 2
+        condition: eq(variables['test.style'], 'integration')
 
-      # - task: PublishTestResults@2
-      #   displayName: 'Publish $(test.style) test results'
-      #   condition: succeededOrFailed()
-      #   inputs:
-      #     testResultsFiles: '**/test-*.xml'
-      #     testRunTitle: 'py$(python.version) $(conda.subdir) $(test.style) tests'
+      - task: PublishTestResults@2
+        displayName: 'Publish $(test.style) test results'
+        condition: succeededOrFailed()
+        inputs:
+          testResultsFiles: '**/test-*.xml'
+          testRunTitle: 'py$(python.version) $(conda.subdir) $(test.style) tests'
 
       - script: |
           pushd %TEMP%
           cd \conda_src
           curl -s https://codecov.io/bash > codecov_uploader.sh
-          bash -c ". codecov_uploader.sh -C $(Build.SourceVersion) -t d7354c4e-90a9-402d-be67-184062ffadac"
+          bash -c ". codecov_uploader.sh -C $(Build.SourceVersion)"
         displayName: 'Upload to codecov.io'
