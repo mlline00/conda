@@ -88,13 +88,13 @@ jobs:
         condition: eq(variables['test.style'], 'unit')
 
       - script: |
-        @ECHO ON
-        pushd %TEMP%
-        cd \conda_src
-        CALL dev-init.bat
-        CALL py.test -m "integration and not installed" -k "cli" --junitxml=junit/test-results-integration_g1.xml --cov=conda --cov-report=xml $(pytest.verbosity)
-      displayName: py$(python.version) $(conda.subdir) integration test group 1
-      condition: eq(variables['test.style'], 'integration')
+          @ECHO ON
+          pushd %TEMP%
+          cd \conda_src
+          CALL dev-init.bat
+          CALL py.test -m "integration and not installed" -k "cli" --junitxml=junit/test-results-integration_g1.xml --cov=conda --cov-report=xml $(pytest.verbosity)
+        displayName: py$(python.version) $(conda.subdir) integration test group 1
+        condition: eq(variables['test.style'], 'integration')
 
       - script: |
           @ECHO ON
