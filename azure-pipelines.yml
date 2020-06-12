@@ -101,7 +101,7 @@ jobs:
           pushd %TEMP%
           cd \conda_src
           CALL dev-init.bat
-          CALL py.test -m "integration and not installed" -k "test_create and not cli" --junitxml=junit/test-results-integration_g2.xml --cov=conda --cov-report=xml $(pytest.verbosity) --cov-append
+          CALL py.test -m "integration and not installed" -k "not test_create and not cli" --junitxml=junit/test-results-integration_g2.xml --cov=conda --cov-report=xml $(pytest.verbosity)  --cov-append
         displayName: py$(python.version) $(conda.subdir) integration test group 2
         condition: eq(variables['test.style'], 'integration')
 
@@ -110,7 +110,7 @@ jobs:
           pushd %TEMP%
           cd \conda_src
           CALL dev-init.bat
-          CALL py.test -m "integration and not installed" -k "not test_create and not cli" --junitxml=junit/test-results-integration_g3.xml --cov=conda --cov-report=xml $(pytest.verbosity)  --cov-append
+          CALL py.test -m "integration and not installed" -k "test_create and not cli" --junitxml=junit/test-results-integration_g3.xml --cov=conda --cov-report=xml $(pytest.verbosity) --cov-append
         displayName: py$(python.version) $(conda.subdir) integration test group 3
         condition: eq(variables['test.style'], 'integration')
 
