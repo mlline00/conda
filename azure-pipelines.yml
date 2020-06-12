@@ -8,7 +8,7 @@ jobs:
     pool:
       vmImage: 'vs2017-win2016'
     variables:
-      pytest.verbosity: ''
+      pytest.verbosity: '-v'
     strategy:
       matrix:
         Python27_32_unit:
@@ -101,17 +101,8 @@ jobs:
           pushd %TEMP%
           cd \conda_src
           CALL dev-init.bat
-          CALL py.test -m "integration and not installed" -k "not test_create and not cli" --junitxml=junit/test-results-integration_g2.xml --cov=conda --cov-report=xml $(pytest.verbosity)  --cov-append
+          CALL py.test -m "integration and not installed" -k "not cli" --junitxml=junit/test-results-integration_g2.xml --cov=conda --cov-report=xml $(pytest.verbosity)  --cov-append
         displayName: py$(python.version) $(conda.subdir) integration test group 2
-        condition: eq(variables['test.style'], 'integration')
-
-      - script: |
-          @ECHO ON
-          pushd %TEMP%
-          cd \conda_src
-          CALL dev-init.bat
-          CALL py.test -m "integration and not installed" -k "test_create and not cli" --junitxml=junit/test-results-integration_g3.xml --cov=conda --cov-report=xml $(pytest.verbosity) --cov-append
-        displayName: py$(python.version) $(conda.subdir) integration test group 3
         condition: eq(variables['test.style'], 'integration')
 
       - task: PublishTestResults@2
